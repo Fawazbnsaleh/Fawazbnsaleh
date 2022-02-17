@@ -3505,6 +3505,29 @@ return LuaTele.sendText(msg_chat_id,msg_id,Reply_Status(Message_Reply.sender.use
 end
 end
 
+if text == "قفل الفارسيه" then 
+if not msg.Addictive then
+return LuaTele.sendText(msg_chat_id,msg_id,'\n*⌔︙هذا الامر يخص { '..Controller_Num(7)..' }* ',"md",true)  
+end
+Redis:set(Super.."Super:Lock:farsia"..msg_chat_id,true) 
+LuaTele.sendText(msg_chat_id,msg_id,Reply_Status(msg.sender.user_id,"⌔︙تم قفـل الفارسيه").Lock,"md",true)  
+return false
+end 
+if text == "فتح الفارسيه" then 
+if not msg.Addictive then
+return LuaTele.sendText(msg_chat_id,msg_id,'\n*⌔︙هذا الامر يخص { '..Controller_Num(7)..' }* ',"md",true)  
+end
+Redis:del(Super.."Super:Lock:farsia"..msg_chat_id)  
+LuaTele.sendText(msg_chat_id,msg_id,Reply_Status(msg.sender.user_id,"⌔︙تم فتح الفارسيه").unLock,"md",true)  
+return false
+end 
+if text and (text:match("ه‍") or text:match("ی") or text:match("ک")) and not msg.Distinguished then 
+local phshar_Group = Redis:get(Super.."Super:Lock:farsia"..msg_chat_id)
+if phshar_Group then
+return LuaTele.deleteMessages(msg.chat_id,{[1]= msg.id})
+end
+end
+
 if TextMsg == "مميز" then
 if not msg.Addictive then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n*⌔︙هاذا الامر يخص { '..Controller_Num(7)..' }* ',"md",true)  
@@ -5968,28 +5991,6 @@ LuaTele.sendText(msg_chat_id,msg_id,restricted,"md",true)
 end
 end
 
-if text == "قفل الفارسيه" then 
-if not msg.Addictive then
-return LuaTele.sendText(msg_chat_id,msg_id,'\n*⌔︙هذا الامر يخص { '..Controller_Num(7)..' }* ',"md",true)  
-end
-Redis:set(Super.."Super:Lock:farsia"..msg_chat_id,true) 
-LuaTele.sendText(msg_chat_id,msg_id,Reply_Status(msg.sender.user_id,"⌔︙تم قفـل الفارسيه").Lock,"md",true)  
-return false
-end 
-if text == "فتح الفارسيه" then 
-if not msg.Addictive then
-return LuaTele.sendText(msg_chat_id,msg_id,'\n*⌔︙هذا الامر يخص { '..Controller_Num(7)..' }* ',"md",true)  
-end
-Redis:del(Super.."Super:Lock:farsia"..msg_chat_id)  
-LuaTele.sendText(msg_chat_id,msg_id,Reply_Status(msg.sender.user_id,"⌔︙تم فتح الفارسيه").unLock,"md",true)  
-return false
-end 
-if text and (text:match("ه‍") or text:match("ی") or text:match("ک")) and not msg.Distinguished then 
-local phshar_Group = Redis:get(Super.."Super:Lock:farsia"..msg_chat_id)
-if phshar_Group then
-return LuaTele.deleteMessages(msg.chat_id,{[1]= msg.id})
-end
-end
 
 if text == "غادر" then 
 if not msg.ControllerBot then 
